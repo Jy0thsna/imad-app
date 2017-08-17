@@ -5,20 +5,61 @@ var path = require('path');
 var app = express();
 app.use(morgan('combined'));
 
+var articleOne = {
+  title: 'Article One | Jyothsna',
+  date: 'Aug 17',
+  heading: 'Article One',
+  content: ` <p>
+                This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really.....
+            </p>
+             <p>
+                This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really.....
+            </p>
+             <p>
+                This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really.....
+            </p> `
+  
+};
+function createTemplate (data) {
+var title=data.date;
+var heading=data.heading;
+var content=data.content;
+var htmlTemplate=
+`<html>
+<head>
+    <title>
+        ${title}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="/ui/style.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container">
+        <div> 
+        <a href="/">Main</a>
+        </div>
+        <hr/>
+        <div>
+            ${heading}
+        </div>
+        <div>
+            ${date}
+        </div>
+        <div>
+            ${content}
+        </div>
+      </div>
+    </body>
+</html>`;
+return htmlTemplate;
+}
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
 app.get('/article-one',function(req, res){
-    res.sendFile(path.join(__dirname, 'ui','article-one.html'));
-});
-
-app.get('/article-two',function(req, res){
-    res.send('Article two is requested and will be served on this page');
-});
-
-app.get('/article-three',function(req, res){
-    res.send('Article three is requested and will be served on this page');
+    res.send(createTemplate(articleOne));
 });
 
 app.get('/ui/style.css', function (req, res) {
