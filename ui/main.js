@@ -11,5 +11,5 @@ button.onclick = function() {
         }
     };
     request.open('GET','http://jyothsnap97.imad.hasura-app.io/counter', true);
-    request.send(NULL);
+    request.send(null);
 };
