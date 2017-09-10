@@ -14,41 +14,6 @@ var config = {
 var app = express();
 app.use(morgan('combined'));
 
-var articles = {
-   'article-one': {
-  title: 'Article One | Jyothsna',
-  date: 'Aug 17',
-  heading: 'Article One',
-  content: ` <p>
-                This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really.....
-            </p>
-             <p>
-                This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really.....
-            </p>
-             <p>
-                This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really..... This is my first article. Or something really.....
-            </p> `
-  },
-    
-    'article-two': { 
-    title: 'Article Two | Jyothsna',
-  date: 'Aug 17',
-  heading: 'Article Two',
-  content: ` <p>
-                This is my second article. Or something really..... 
-            </p> `
-  },            
-    
-    'article-three': { 
-    title: 'Article Three | Jyothsna',
-  date: 'Aug 17',
-  heading: 'Article Three',
-  content: ` <p>
-                This is my third article. 
-            </p> `
-  }
-};
-
 function createTemplate (data) {
 var title = data.title;
 var heading = data.heading;
@@ -87,16 +52,6 @@ return htmlTemplate;
 }
 
 var pool = new Pool(config);
-app.get('/test-db', function(req, res){
-    
-    pool.query('SELECT * FROM test', function(err, result) {
-        if(err) {
-            res.status(500).send(err.toString());
-        } else {
-            res.send(JSON.stringify(result.rows)); 
-        }
-    });
-});
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
@@ -116,7 +71,7 @@ app.get('/ui/style.css', function(req,res) {
     res.sendFile(path.join(__dirname, 'ui', 'style.css'));
 });
 
-app.get('/articles/:articleName',function(req, res) {
+app.get('/:articleName',function(req, res) {
     
     pool.query("SELECT * FROM article WHERE title = $1", [req.params.articleName] , function (err, result) {
         if (err) {
