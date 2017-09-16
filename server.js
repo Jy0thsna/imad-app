@@ -2,6 +2,8 @@ var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
+var crypto = require('crypto');
+var bodyParser = require('body-parser');
 
 var config = {
     user: 'jyothsnap97',
@@ -13,6 +15,7 @@ var config = {
 
 var app = express();
 app.use(morgan('combined'));
+app.use(bodyParser.json());
 
 function createTemplate (data) {
 var title = data.title;
@@ -49,6 +52,11 @@ var htmlTemplate =`
     </body>
 </html>`;
 return htmlTemplate;
+}
+
+function hash(input, salt){
+    var hashed = crypto.pbkdf2Sync(input, salt, 10000, 'sha512');
+    return['pbkdf2','10000',salt, hashed.toString('hex')].join('$');
 }
 
 var pool = new Pool(config);
